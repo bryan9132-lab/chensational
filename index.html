@@ -316,10 +316,10 @@ dialog.lb button { position: absolute; top: 8px; right: 8px; border: 0; border-r
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } html { scroll-behavior: auto; } }
 </style>
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://chensational.com/">
+<meta property="og:url" content="https://chensational.dev/">
 <meta property="og:title" content="Chensational Products">
 <meta property="og:description" content="Products built by Bryan Chen, Haas MBA '28: what each one is, how it works, and the tools behind it.">
-<meta property="og:image" content="https://chensational.com/og.png">
+<meta property="og:image" content="https://chensational.dev/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script defer src="/_vercel/insights/script.js"></script>
@@ -532,8 +532,8 @@ const PRODUCTS = [
     status: "Used every week", tone: "cyan",
     meta: "Solo build · Personal tool · AI agent",
     cover: "haas-agent.jpg",
-    links: [{ label: "Try the demo", url: "https://mba-study-agent-bryanc.streamlit.app/", primary: true }],
-    linkNote: "The public demo holds limited sample data and may take a moment to wake up.",
+    links: [{ label: "Try the demo", url: "https://web-production-02945.up.railway.app/", primary: true }],
+    linkNote: "The public demo uses sample course material, not real class files.",
     stats: [["clock", "pink", "83%", "less weekly prep: 3 hrs down to 30 min"], ["calendar", "mint", "0", "missed deadlines this semester, down from about one a week"], ["book", "blue", "4", "courses in one place"], ["hourglass", "gold", "Hours", "estimated per assignment"]],
     mess: {
       scraps: [
@@ -572,6 +572,7 @@ const PRODUCTS = [
       ["pdfplumber", "Turns slides, syllabi, and readings into text the AI can read."],
       ["SQLite", "The course brain: every document, deadline, and note, searchable by course and date."],
       ["Streamlit", "The simple web app I open before class."],
+      ["Railway", "Hosts the always-on public demo with permanent storage."],
       ["Granola", "Records my lectures; its transcripts are the next source to merge with my notes."],
       ["Python", "Ties the whole pipeline together."]
     ],
@@ -580,7 +581,7 @@ const PRODUCTS = [
       ["clock", "blue", "Plan by effort, not just date", "A 3-hour assignment due Friday outranks a 20-minute reading due Thursday."],
       ["file", "mint", "Never cut the source short", "Full text always, after a trimmed syllabus once lost its exam dates."]
     ],
-    next: [["mic", "Merge Granola transcripts with notes"], ["cloud", "Always-on hosting"], ["eye", "Live view of what the agent is doing"], ["bell", "Weekly digest before class"]]
+    next: [["mic", "Merge Granola transcripts with notes"], ["eye", "Live view of what the agent is doing"], ["bell", "Weekly digest before class"]]
   }
 ];
 
