@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chensational Products</title>
+<meta name="description" content="Products built by Bryan Chen, Haas MBA '28: the problem, how each one works, the tools behind it, and live demos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+body { margin: 0; }
+[hidden] { display: none !important; }
+/* Layout: one 1120px column on a faint dot grid. Home = wordmark + screenshot collage, product cards, about, contact.
+   Case study (#vit etc) = header, icon stat strip, visual before/after, pipeline diagram, screenshot walkthrough, tap-to-open stack tiles, product calls. */
+:root {
+  --bg: #F3F5FB;
+  --surface: #FFFFFF;
+  --surface-2: #E9EDF7;
+  --ink: #121833;
+  --muted: #56608A;
+  --line: #D5DBEC;
+  --brand: #E8365A;
+  --brand-soft: #FCE4EA;
+  --cyan: #0B86B8;
+  --cyan-soft: #DDF1FA;
+  --green: #17996A;
+  --green-soft: #DDF4EA;
+  --amber: #B97800;
+  --amber-soft: #FBF0D6;
+  --dark: #121833;
+  --dark-ink: #DCE3FF;
+  --dark-muted: #8A95C2;
+  --dot: rgba(18, 24, 51, .07);
+  --font-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1326; --surface: #151B33; --surface-2: #1C2442; --ink: #E8ECFA; --muted: #95A0C8; --line: #29325A;
+    --brand: #FF5C7A; --brand-soft: #3A1C30; --cyan: #4CCFFF; --cyan-soft: #12324A; --green: #3DD68C; --green-soft: #133A2E;
+    --amber: #FFC24B; --amber-soft: #3B3017; --dark: #090D1C; --dark-ink: #DCE3FF; --dark-muted: #7F8AB8; --dot: rgba(232, 236, 250, .06);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1326; --surface: #151B33; --surface-2: #1C2442; --ink: #E8ECFA; --muted: #95A0C8; --line: #29325A;
+  --brand: #FF5C7A; --brand-soft: #3A1C30; --cyan: #4CCFFF; --cyan-soft: #12324A; --green: #3DD68C; --green-soft: #133A2E;
+  --amber: #FFC24B; --amber-soft: #3B3017; --dark: #090D1C; --dark-ink: #DCE3FF; --dark-muted: #7F8AB8; --dot: rgba(232, 236, 250, .06);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background-color: var(--bg); color: var(--ink);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px); background-size: 22px 22px;
+  font-family: var(--font-body); font-size: 16.5px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 0 64px;
+}
+a { color: inherit; }
+img { max-width: 100%; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin-inline: auto; }
+h1, h2, h3 { text-wrap: balance; }
+svg.i { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Top bar */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 20px; flex-wrap: wrap; }
+.logo { font-family: var(--font-display); font-weight: 700; font-size: 16px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.logo-mark { width: 26px; height: 26px; border-radius: 7px; background: var(--brand); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 800; }
+.nav { display: flex; gap: 22px; font-weight: 500; font-size: 15px; }
+.nav a { text-decoration: none; color: var(--muted); }
+.nav a:hover { color: var(--ink); }
+
+/* Buttons and chips */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 600 14.5px var(--font-body); text-decoration: none; cursor: pointer; transition: border-color .15s, transform .15s; }
+.btn:hover { border-color: var(--cyan); transform: translateY(-1px); }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.btn.primary:hover { border-color: var(--brand); filter: brightness(1.06); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--font-mono); font-size: 12.5px; padding: 3px 9px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; }
+.status { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; }
+.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 22%, transparent); }
+.green { color: var(--green); } .amber { color: var(--amber); } .cyan { color: var(--cyan); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-block: 30px 52px; }
+.wordmark { font-family: var(--font-display); font-weight: 800; font-size: clamp(42px, 7vw, 84px); line-height: 0.98; letter-spacing: -0.035em; margin: 0; }
+.wordmark .chen { color: var(--brand); }
+.wordmark .cursor { display: inline-block; width: .42em; height: .1em; background: var(--cyan); margin-left: .08em; animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.lede { font-size: 19px; margin: 22px 0 0; max-width: 30em; }
+.lede strong { font-weight: 600; }
+.hero-ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+
+.collage { position: relative; height: 430px; min-width: 0; }
+.frame { position: absolute; display: block; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 26px 50px -24px rgba(10, 14, 40, .45); transition: transform .3s ease; text-decoration: none; }
+.frame .bar { display: flex; gap: 5px; padding: 8px 10px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+.frame .bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.frame img { display: block; width: 100%; height: calc(100% - 25px); object-fit: cover; object-position: top left; }
+.frame.f1 { width: 74%; height: 250px; left: 0; top: 10px; transform: rotate(-2deg); z-index: 1; }
+.frame.f2 { width: 46%; height: 300px; right: 0; top: 0; transform: rotate(3deg); z-index: 2; }
+.frame.f3 { width: 66%; height: 210px; left: 14%; bottom: 0; transform: rotate(1deg); z-index: 3; }
+.frame:hover { transform: rotate(0) translateY(-6px); z-index: 5; }
+.tag { position: absolute; z-index: 6; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-size: 13.5px; font-weight: 600; box-shadow: 0 10px 24px -14px rgba(10, 14, 40, .5); white-space: nowrap; pointer-events: none; }
+.tag svg.i { width: 18px; height: 18px; }
+.tag.t1 { left: -10px; top: 214px; } .tag.t2 { right: -6px; top: 270px; } .tag.t3 { left: 4%; bottom: -14px; }
+
+.industries { border-top: 1px solid var(--line); padding-top: 22px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 24px; align-items: center; }
+.industries .lbl { font-size: 14px; color: var(--muted); font-weight: 500; }
+.ind-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.ind { display: inline-flex; gap: 8px; align-items: center; padding: 6px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-size: 14.5px; font-weight: 500; }
+.ind svg.i { width: 17px; height: 17px; color: var(--cyan); }
+.ind small { color: var(--muted); font-size: 12.5px; font-weight: 400; }
+
+/* Sections */
+.sec { margin-top: 84px; }
+.sec-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 3.6vw, 34px); letter-spacing: -0.02em; line-height: 1.15; margin: 0; }
+.sec-head p { margin: 0; color: var(--muted); font-size: 15px; max-width: 36em; }
+
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: var(--ink); transition: border-color .2s, transform .2s; }
+.card:hover { border-color: var(--cyan); transform: translateY(-3px); }
+.card .shot { aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+.card .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+.card .body { padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.card h3 { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.01em; margin: 0; line-height: 1.2; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+.card .go { margin-top: auto; padding-top: 6px; font-weight: 600; font-size: 14.5px; color: var(--cyan); }
+.next-card { border: 1px dashed var(--line); border-radius: 18px; padding: 20px 22px; margin-top: 20px; display: flex; gap: 14px; align-items: center; color: var(--muted); font-size: 15px; }
+.next-card b { color: var(--ink); }
+.next-card svg.i { color: var(--brand); }
+
+.about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 44px; }
+.about p { margin: 16px 0 0; max-width: 34em; }
+.path { list-style: none; margin: 0; padding: 0; }
+.path li { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 14px; padding: 11px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.path li:last-child { border-bottom: 1px solid var(--line); }
+.path .yr { font-family: var(--font-mono); font-size: 13px; color: var(--muted); padding-top: 2px; }
+.path .co { font-weight: 600; }
+.path .role { display: block; font-size: 14px; }
+.path .ind-tag { color: var(--muted); font-size: 13px; display: block; }
+
+.contact { margin-top: 84px; background: var(--dark); color: var(--dark-ink); border-radius: 22px; padding: 38px 34px; display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+.contact h2 { color: #fff; }
+.contact p { margin: 8px 0 0; color: var(--dark-muted); }
+.contact-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.email { font-family: var(--font-mono); font-size: 15px; user-select: all; padding: 10px 14px; border-radius: 10px; background: rgba(255,255,255,.07); }
+.contact .btn { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.18); color: #fff; }
+footer { margin-top: 26px; text-align: center; font-size: 13px; color: var(--muted); }
+
+/* ===== Case study ===== */
+.crumb { display: inline-flex; gap: 8px; align-items: center; font-size: 14.5px; color: var(--muted); text-decoration: none; font-weight: 500; margin-top: 12px; }
+.crumb:hover { color: var(--ink); }
+.cs-head { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 40px; align-items: end; padding-block: 26px 34px; }
+.cs-head .meta-row { display: flex; gap: 10px 16px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; font-size: 14px; color: var(--muted); }
+.cs-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 5.6vw, 60px); line-height: 1.02; letter-spacing: -0.03em; margin: 0; }
+.cs-tag { font-size: 19px; margin: 16px 0 0; max-width: 30em; }
+.cs-ctas { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.cs-ctas .note { flex-basis: 100%; text-align: right; font-size: 13px; color: var(--muted); margin: 0; }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 10px; align-content: start; }
+.ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; }
+.ico.pink { background: var(--brand-soft); color: var(--brand); } .ico.blue { background: var(--cyan-soft); color: var(--cyan); }
+.ico.mint { background: var(--green-soft); color: var(--green); } .ico.gold { background: var(--amber-soft); color: var(--amber); }
+.stat b { font-family: var(--font-display); font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 14px; line-height: 1.4; }
+.stats-note { font-size: 13px; color: var(--muted); margin: 8px 2px 0; }
+
+.cs-sec { margin-top: 64px; }
+.cs-sec > h2 { margin-bottom: 20px; }
+
+/* Before / after flows */
+.flows { display: grid; gap: 14px; }
+.flow { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px 20px; }
+.flow-label { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; margin-bottom: 16px; padding: 4px 12px; border-radius: 999px; }
+.flow.before .flow-label { background: var(--brand-soft); color: var(--brand); }
+.flow.after .flow-label { background: var(--green-soft); color: var(--green); }
+.flow-steps { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); position: relative; }
+.fstep { display: grid; justify-items: center; text-align: center; gap: 8px; position: relative; padding-inline: 6px; }
+.fstep::after { content: ""; position: absolute; top: 24px; left: calc(50% + 30px); right: calc(-50% + 30px); height: 2px; background: var(--line); }
+.fstep:last-child::after { display: none; }
+.fstep .dot { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-2); color: var(--muted); }
+.flow.before .fstep .dot { background: var(--brand-soft); color: var(--brand); }
+.flow.after .fstep .dot { background: var(--green-soft); color: var(--green); }
+.fstep b { font-size: 14.5px; font-weight: 600; line-height: 1.3; }
+.fstep small { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.flow-foot { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); display: flex; gap: 10px; align-items: center; font-size: 14.5px; font-weight: 600; }
+.flow.before .flow-foot { color: var(--brand); } .flow.after .flow-foot { color: var(--green); }
+
+/* Haas: scattered sources -> one answer */
+.mess { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 24px; align-items: center; }
+.pile { position: relative; min-height: 330px; }
+.scrap { position: absolute; display: flex; gap: 10px; align-items: center; padding: 11px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 10px 22px -16px rgba(10,14,40,.5); font-size: 14px; max-width: 78%; }
+.scrap b { display: block; font-size: 14px; }
+.scrap small { color: var(--muted); font-size: 12.5px; }
+.mess-arrow { display: grid; justify-items: center; gap: 6px; color: var(--brand); font-weight: 700; font-size: 13px; text-align: center; }
+.mess-arrow .ico { width: 52px; height: 52px; border-radius: 50%; }
+.answer { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 24px 50px -30px rgba(10,14,40,.5); }
+.ask { display: flex; gap: 10px; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--line); background: var(--surface-2); font-weight: 600; font-size: 15px; }
+.ask .me { margin-left: auto; font-size: 12px; color: var(--muted); font-weight: 500; }
+.reply { padding: 10px 16px 14px; display: grid; gap: 2px; }
+.due { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.due:last-of-type { border-bottom: 0; }
+.due .bar { width: 8px; height: 34px; border-radius: 4px; }
+.due b { display: block; font-weight: 600; }
+.due small { color: var(--muted); font-size: 12.5px; }
+.due .hrs { font-family: var(--font-mono); font-size: 12.5px; padding: 3px 8px; border-radius: 6px; background: var(--surface-2); white-space: nowrap; }
+.reply .sum { margin-top: 8px; padding: 10px 12px; border-radius: 10px; background: var(--cyan-soft); color: var(--ink); font-size: 13.5px; display: flex; gap: 8px; }
+.reply .sum svg.i { color: var(--cyan); width: 18px; height: 18px; }
+.illus { font-size: 12.5px; color: var(--muted); margin: 10px 2px 0; }
+
+/* Pipeline */
+.pipe { background: var(--dark); color: var(--dark-ink); border-radius: 18px; padding: 26px 24px; overflow-x: auto; }
+.pipe-row { display: flex; align-items: stretch; min-width: min-content; }
+.node { width: 172px; flex: 0 0 auto; border: 1px solid rgba(255,255,255,.14); border-radius: 14px; padding: 14px; background: rgba(255,255,255,.04); display: flex; flex-direction: column; gap: 8px; }
+.node .ni { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: rgba(76, 207, 255, .14); color: #8EE2FF; }
+.node .t { font-weight: 600; font-size: 15px; line-height: 1.3; color: #fff; }
+.node .d { font-size: 13px; color: var(--dark-muted); line-height: 1.4; }
+.node .tools { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; }
+.node .tools span { font-family: var(--font-mono); font-size: 11px; padding: 2px 6px; border-radius: 5px; background: rgba(76, 207, 255, .14); color: #8EE2FF; }
+.node .tools span.soon { background: rgba(255, 194, 75, .16); color: #FFD27A; }
+.node.mine { border-color: rgba(255, 124, 149, .7); }
+.node.mine .ni { background: rgba(255, 124, 149, .16); color: #FF9CB0; }
+.node .who { font-family: var(--font-mono); font-size: 11px; color: #FF9CB0; }
+.arrow { flex: 0 0 34px; display: grid; place-items: center; color: var(--dark-muted); }
+.pipe-side { margin: 16px 0 0; font-size: 13px; color: var(--dark-muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.pipe-side b { color: #8EE2FF; font-weight: 500; font-family: var(--font-mono); }
+
+/* Walkthrough */
+.walk { display: grid; gap: 30px; }
+.shot-item { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: center; }
+.shot-item:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); }
+.shot-item:nth-child(even) .shot-frame { order: 2; }
+.shot-frame { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--surface); cursor: zoom-in; padding: 0; display: block; width: 100%; }
+.shot-frame .chrome { display: flex; gap: 6px; padding: 9px 12px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+.shot-frame .chrome i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+.shot-frame img { display: block; width: 100%; max-height: 480px; object-fit: cover; object-position: top left; }
+.shot-text { display: grid; gap: 10px; justify-items: start; }
+.shot-text .n { font-family: var(--font-display); font-weight: 700; font-size: 15px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--brand); color: #fff; }
+.shot-text h3 { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin: 0; letter-spacing: -0.01em; line-height: 1.25; }
+.shot-text p { margin: 0; color: var(--muted); }
+
+/* Stack tiles */
+.stack { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; align-items: start; }
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.tool summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px; }
+.tool summary::-webkit-details-marker { display: none; }
+.tool summary:hover { background: var(--surface-2); }
+.tool .tn { font-family: var(--font-mono); font-weight: 600; font-size: 14.5px; display: block; }
+.tool .tc { font-size: 12.5px; color: var(--muted); }
+.tool .plus { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: var(--muted); font-size: 15px; line-height: 1; transition: transform .2s; }
+.tool[open] .plus { transform: rotate(45deg); }
+.tool[open] { border-color: var(--cyan); }
+.tool .tbody { padding: 0 16px 16px; display: grid; gap: 8px; font-size: 14px; }
+.tool .tbody p { margin: 0; }
+.tool .what { color: var(--muted); }
+.tool .here { padding: 10px 12px; background: var(--brand-soft); border-radius: 10px; }
+.tool .here b { color: var(--brand); }
+.stack-hint { font-size: 13.5px; color: var(--muted); margin: -8px 0 16px; }
+
+/* Calls */
+.calls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.call { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; gap: 12px; align-content: start; }
+.call h3 { font-size: 17px; margin: 0; line-height: 1.3; }
+.call p { margin: 0; color: var(--muted); font-size: 14.5px; }
+.nexts { display: flex; flex-wrap: wrap; gap: 10px; }
+.nexts span { display: inline-flex; gap: 10px; align-items: center; padding: 10px 14px; border-radius: 12px; border: 1px dashed var(--line); background: var(--surface); font-size: 14.5px; font-weight: 500; }
+.nexts svg.i { color: var(--amber); width: 18px; height: 18px; }
+
+.pager { margin-top: 72px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.pager a { border: 1px solid var(--line); background: var(--surface); border-radius: 14px; padding: 16px 20px; text-decoration: none; display: grid; gap: 4px; }
+.pager a:hover { border-color: var(--cyan); }
+.pager small { color: var(--muted); font-size: 13px; }
+.pager b { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+.pager a.right { text-align: right; }
+
+dialog.lb { border: 0; padding: 0; background: transparent; max-width: min(1400px, 96vw); max-height: 94vh; }
+dialog.lb::backdrop { background: rgba(6, 9, 22, .82); }
+dialog.lb img { display: block; max-width: 100%; max-height: 86vh; border-radius: 10px; }
+dialog.lb p { color: #fff; text-align: center; margin: 10px 0 0; font-size: 14px; }
+dialog.lb button { position: absolute; top: 8px; right: 8px; border: 0; border-radius: 8px; padding: 6px 12px; font: 600 14px var(--font-body); cursor: pointer; background: rgba(0,0,0,.6); color: #fff; }
+
+@media (max-width: 900px) {
+  .hero, .cs-head, .about { grid-template-columns: minmax(0, 1fr); }
+  .collage { height: 360px; }
+  .grid, .calls { grid-template-columns: minmax(0, 1fr); }
+  .cs-ctas { justify-content: flex-start; } .cs-ctas .note { text-align: left; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shot-item, .shot-item:nth-child(even) { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .shot-item:nth-child(even) .shot-frame { order: 0; }
+  .industries { grid-template-columns: minmax(0, 1fr); }
+  .mess { grid-template-columns: minmax(0, 1fr); }
+  .mess-arrow { transform: rotate(90deg); }
+}
+@media (max-width: 640px) {
+  .collage { height: 300px; }
+  .frame.f1 { height: 170px; } .frame.f2 { height: 210px; } .frame.f3 { height: 150px; }
+  .tag.t1 { top: 150px; } .tag.t2 { top: 196px; }
+  .tag { font-size: 12px; padding: 6px 10px; }
+  .flow-steps { grid-auto-flow: row; gap: 14px; }
+  .fstep { grid-template-columns: auto minmax(0, 1fr); justify-items: start; text-align: left; column-gap: 14px; row-gap: 0; }
+  .fstep .dot { grid-row: span 2; }
+  .fstep::after { display: none; }
+  .pipe-row { flex-direction: column; min-width: 0; }
+  .node { width: 100%; }
+  .arrow { flex-basis: 30px; transform: rotate(90deg); }
+  .pager { grid-template-columns: minmax(0, 1fr); }
+  .path li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .pile { min-height: 360px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } html { scroll-behavior: auto; } }
+</style>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chensational.com/">
+<meta property="og:title" content="Chensational Products">
+<meta property="og:description" content="Products built by Bryan Chen, Haas MBA '28: what each one is, how it works, and the tools behind it.">
+<meta property="og:image" content="https://chensational.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="#" data-home><span class="logo-mark">C</span>chensational</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#" data-go="products">Products</a>
+      <a href="#" data-go="about">About</a>
+      <a href="#" data-go="contact">Contact</a>
+    </nav>
+  </header>
+  <main id="app"></main>
+  <section class="contact" id="contact">
+    <div>
+      <h2>Let's talk</h2>
+      <p>Hiring for product roles? I'm happy to walk you through any of these live.</p>
+    </div>
+    <div class="contact-actions">
+      <span class="email" id="email">bryan.chen@berkeley.edu</span>
+      <button class="btn" id="copy" type="button">Copy email</button>
+      <a class="btn" href="https://www.linkedin.com/in/bryan-chen-haas" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+  <footer>Designed and built by Bryan Chen with Claude Code.</footer>
+</div>
+
+<dialog class="lb" id="lb"><button type="button" id="lb-close">Close</button><img id="lb-img" alt=""><p id="lb-cap"></p></dialog>
+
+<script>
+/* ===== Icons (24px stroke) ===== */
+const ICONS = {
+  file: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+  keyboard: '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/>',
+  calc: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>',
+  sheets: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>',
+  copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
+  upload: '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',
+  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  check: '<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+  bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  report: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  layers: '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',
+  wallet: '<path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M21 9h-6a3 3 0 0 0 0 6h6z"/>',
+  code: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/>',
+  db: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
+  scan: '<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M8 12h8"/>',
+  trend: '<path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+  shield: '<path d="M12 3 5 6v6c0 4.5 3 7.7 7 9 4-1.3 7-4.5 7-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  walk: '<circle cx="13" cy="4" r="2"/><path d="m9 21 2-6 3 3v4M7 12l3-4 4 2 3 3M11 15l-1-5"/>',
+  paw: '<circle cx="7" cy="9" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="17" cy="9" r="2"/><path d="M12 12c-3 0-5 3-5 5 0 1.5 1.2 2 2.5 2 1 0 1.6-.6 2.5-.6s1.5.6 2.5.6c1.3 0 2.5-.5 2.5-2 0-2-2-5-5-5z"/>',
+  form: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+  inbox: '<path d="M3 13h5l2 3h4l2-3h5"/><path d="M5 5h14l2 8v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-5z"/>',
+  hourglass: '<path d="M6 3h12M6 21h12M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9"/>',
+  bot: '<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 17h6"/>',
+  steth: '<path d="M6 3v5a5 5 0 0 0 10 0V3"/><path d="M11 13v3a4 4 0 0 0 8 0v-2"/><circle cx="19" cy="12" r="2"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  plus: '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
+  bell: '<path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  folder: '<path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>',
+  brain: '<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h0V4z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h0V4z"/>',
+  spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+  sync: '<path d="M20 11a8 8 0 0 0-14-5l-2 2M4 13a8 8 0 0 0 14 5l2-2"/><path d="M4 4v4h4M20 20v-4h-4"/>',
+  cloud: '<path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.5 1.5A3.5 3.5 0 0 0 7 18z"/>',
+  window: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/>',
+  plug: '<path d="M9 2v6M15 2v6M6 8h12v3a6 6 0 0 1-12 0zM12 17v5"/>',
+  link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  cup: '<path d="M4 8h13v5a6 6 0 0 1-12 0z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17M8 3v2M12 3v2"/>',
+  hanger: '<path d="M12 7a2 2 0 1 1 2-2c0 1-2 1.5-2 3L3 15a1 1 0 0 0 .6 1.8h16.8A1 1 0 0 0 21 15z"/>',
+  live: '<circle cx="12" cy="12" r="2"/><path d="M8.5 15.5a5 5 0 0 1 0-7M15.5 8.5a5 5 0 0 1 0 7M5.6 18.4a9 9 0 0 1 0-12.8M18.4 5.6a9 9 0 0 1 0 12.8"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  pie: '<path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/>'
+};
+const ic = (n, cls = "i") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ICONS.spark}</svg>`;
+
+/* ================================================================
+   CONTENT. To add a product: copy one object in PRODUCTS and edit it.
+   Tools are explained once in TOOLS; each product says what that tool did.
+   ================================================================ */
+const TOOLS = {
+  "Claude Code":   { icon: "code", cat: "AI coding assistant", what: "An AI pair programmer that writes and edits code from plain-English instructions." },
+  "Claude API":    { icon: "spark", cat: "AI model", what: "Anthropic's AI model, called from my own code to read, sort, and write text." },
+  "Python":        { icon: "code", cat: "Language", what: "The programming language the app is written in." },
+  "Flask":         { icon: "window", cat: "Web framework", what: "A lightweight Python toolkit for web apps. It serves the pages and handles every button press." },
+  "SQLAlchemy":    { icon: "link", cat: "Database layer", what: "Lets Python code read and write the database safely without hand-written queries." },
+  "PostgreSQL":    { icon: "db", cat: "Database", what: "A production-grade database that stores records safely and lets you query them any way you need." },
+  "SQLite":        { icon: "db", cat: "Database", what: "A small database that lives in one file. No server needed, ideal for prototypes and personal tools." },
+  "pdfplumber":    { icon: "scan", cat: "PDF reader", what: "A Python library that pulls text and tables out of PDF files." },
+  "openpyxl":      { icon: "sheets", cat: "Excel writer", what: "A Python library that creates formatted Excel files from code." },
+  "TWSE API":      { icon: "trend", cat: "Market data", what: "The Taiwan Stock Exchange's public price feed." },
+  "JavaScript":    { icon: "window", cat: "Front end", what: "Makes the page interactive in the browser: tabs, filters, drag-and-drop." },
+  "Railway":       { icon: "cloud", cat: "Cloud hosting", what: "Runs the app on the internet and redeploys automatically whenever I push new code." },
+  "Computer-use agent": { icon: "bot", cat: "AI agent", what: "An AI that operates software the way a person does: it looks at the screen, then clicks and types." },
+  "Jinja2":        { icon: "layers", cat: "Page templates", what: "Fills HTML templates with live data, so one template can show any animal's record." },
+  "Salesforce":    { icon: "inbox", cat: "CRM", what: "Relationship-management software many nonprofits use to manage volunteers." },
+  "Canvas API":    { icon: "plug", cat: "School data", what: "The official way for software to read files from Canvas, the platform Berkeley calls bCourses." },
+  "watchdog":      { icon: "eye", cat: "File watcher", what: "A Python library that notices the moment a new file lands in a folder." },
+  "Streamlit":     { icon: "window", cat: "App framework", what: "Turns a Python script into a clickable web app with menus, buttons, and forms." },
+  "Granola":       { icon: "mic", cat: "AI note-taker", what: "Records lectures and produces transcripts and summaries." }
+};
+
+const PRODUCTS = [
+  {
+    id: "vit",
+    name: "VIT: Vincera Investment Tracker",
+    short: "VIT",
+    tagline: "Replaced a family office's manual Excel workflow with one live tracker.",
+    status: "In daily use", tone: "green",
+    meta: "Solo build · 4 months · Fintech",
+    cover: "vit-holdings.jpg",
+    links: [],
+    linkNote: "Live demo available on request. Screenshots use scrambled sample numbers.",
+    stats: [["clock", "pink", "90%", "less manual work: ~2 hrs a day down to ~12 min"], ["shield", "mint", "0%", "error rate since launch, down from frequent manual mistakes"], ["layers", "blue", "4", "entities tracked in one view"], ["file", "gold", "3", "broker PDF formats read automatically"]],
+    before: { steps: [["inbox", "PDF arrives", "From each broker"], ["keyboard", "Retype trades", "Into Excel"], ["calc", "Recalculate", "Formula by formula"], ["copy", "Copy & paste", "Into the report"]], foot: ["clock", "~2 hours a day, error-prone, no audit trail"] },
+    after: { steps: [["upload", "Drop the PDF", "Drag onto the page"], ["eye", "Check preview", "Trades read for you"], ["check", "Confirm", "One click"], ["report", "Export report", "Same format, instantly"]], foot: ["bolt", "~12 minutes a day, 0% errors, every number traceable"] },
+    pipeline: [
+      { icon: "file", t: "Statements in", d: "Broker PDFs or manual entry", tools: [] },
+      { icon: "scan", t: "Read the PDF", d: "One parser per broker", tools: ["pdfplumber"] },
+      { icon: "calc", t: "Compute P&L", d: "Replays every trade", tools: ["Python", "Flask"] },
+      { icon: "db", t: "Ledger", d: "Full history kept", tools: ["PostgreSQL"] },
+      { icon: "report", t: "Dashboard & report", d: "Live view + Excel", tools: ["JavaScript", "openpyxl"] }
+    ],
+    pipeNote: `<b>TWSE API</b> supplies latest prices · <b>Railway</b> hosts it`,
+    walkthrough: [
+      { img: "vit-holdings.jpg", t: "Every position at a glance", d: "All entities and brokers, with live value and gain or loss." },
+      { img: "vit-trades.jpg", t: "Every trade in one place", d: "Filter by entity, broker, month, or type in seconds." },
+      { img: "vit-pnl.jpg", t: "Profit with an audit trail", d: "Each number shows how it was calculated." },
+      { img: "vit-cash.jpg", t: "Cash across 12 accounts", d: "Updates automatically as trades are confirmed." },
+      { img: "vit-dividends.jpg", t: "Dividends, tracked to arrival", d: "Previews the new average cost before shares land." }
+    ],
+    stack: [
+      ["Claude Code", "I designed the product and wrote the specs; Claude Code helped write and debug the code."],
+      ["Python", "Runs the business logic: fees, taxes, cost basis, and profit."],
+      ["Flask", "Serves the dashboard and handles upload, confirm, adjust, and export."],
+      ["PostgreSQL", "Holds every trade and cash move, so any number traces back to its source."],
+      ["SQLAlchemy", "Keeps database code clean as the model grew to 4 entities and 12 accounts."],
+      ["pdfplumber", "Reads each broker's statement layout, so nobody retypes trades."],
+      ["openpyxl", "Builds the daily report in the office's existing format."],
+      ["TWSE API", "Pulls the latest price for every holding in one click."],
+      ["JavaScript", "Powers tabs, filters, and drag-and-drop upload."],
+      ["Railway", "Hosts the production app; updates ship with one push."]
+    ],
+    calls: [
+      ["target", "pink", "Match the report they trust", "Same Excel format as before, so zero retraining."],
+      ["sync", "blue", "Recompute every time", "Each trade replays full history, so numbers always reconcile."],
+      ["eye", "mint", "Preview before saving", "People review parsed trades first, so they trust the automation."]
+    ],
+    next: [["trend", "US & Japan stocks with currency tracking"], ["clock", "Automatic daily price refresh"]]
+  },
+  {
+    id: "petconnect",
+    name: "PetConnect",
+    short: "PetConnect",
+    tagline: "Gets a volunteer's observation into a shelter animal's medical record, the same day.",
+    status: "Hackathon build", tone: "amber",
+    meta: "AI Valley × Pet Zen hackathon · Team of 2 · AI agent",
+    cover: "pet-checkin.jpg",
+    links: [
+      { label: "Watch the demo", url: "https://youtu.be/ZBtRlNOb1PM", primary: true },
+      { label: "Open the test app", url: "https://petconnect-production-8b06.up.railway.app" }
+    ],
+    linkNote: "All animals and records are fictional test data.",
+    stats: [["clock", "blue", "< 2 min", "per check-in, down from ~3"], ["copy", "pink", "0", "retyping of 50-60 daily reports"], ["bell", "mint", "Same day", "concerns reach the medical team"], ["form", "gold", "5", "questions, 3 more only if flagged"]],
+    statsNote: "Impact figures are the team's estimates from our pitch.",
+    before: { steps: [["walk", "Volunteer walk", "Notices a limp"], ["form", "Long form", "Open-ended note"], ["hourglass", "Note sits", "Medical can't see it"], ["keyboard", "Staff retype", "Days later"]], foot: ["clock", "2-3 days before the vet hears about it"] },
+    after: { steps: [["walk", "Volunteer walk", "Notices a limp"], ["form", "Quick check-in", "Under 2 minutes"], ["bot", "AI agent", "Writes it into the record"], ["steth", "Medical team", "Sees it where they look"]], foot: ["bolt", "Caught the same day"] },
+    pipeline: [
+      { icon: "form", t: "Check-in form", d: "5 questions, +3 if flagged", tools: ["Flask", "Jinja2"], who: "Bryan" },
+      { icon: "inbox", t: "Volunteer intake", d: "Where volunteers log", tools: ["Salesforce"], who: "Carl" },
+      { icon: "bot", t: "AI agent", d: "Clicks and types like a person", tools: ["Computer-use agent"], who: "Carl" },
+      { icon: "window", t: "Shelter system copy", d: "Safe stand-in for PetPoint", tools: ["Flask", "SQLite"], who: "Bryan" },
+      { icon: "steth", t: "Medical record", d: "Note, comment, exam if flagged", tools: [] }
+    ],
+    pipeNote: `<span style="color:#FF9CB0">Pink outline</span> = parts I built · <b>Railway</b> hosts the test app`,
+    walkthrough: [
+      { img: "pet-checkin.jpg", t: "A 2-minute check-in", d: "Flagging \"some concerns\" reveals three follow-up questions." },
+      { img: "pet-list.jpg", t: "A safe copy of the shelter system", d: "PetPoint has no write access for software, so the agent works through a stand-in with fictional data." },
+      { img: "pet-exam-result.jpg", t: "Concerns land in exam history", d: "Labeled \"volunteer-reported\", where medical staff already look." },
+      { img: "pet-comment-result.jpg", t: "One readable summary per visit", d: "All answers combined into the note staff read first." }
+    ],
+    stack: [
+      ["Computer-use agent", "PetPoint can't accept data from other software, so the agent fills in its screens directly. Built by my teammate Carl."],
+      ["Flask", "Powers my copy of the shelter system: search, record tabs, and the check-in form."],
+      ["SQLite", "Stores the fictional animals and every record the agent writes, so the demo reacts like the real thing."],
+      ["Jinja2", "Renders record screens close enough to PetPoint's layout for the agent to navigate."],
+      ["Salesforce", "Where volunteers already log visits; Carl built that intake flow."],
+      ["Railway", "Gave judges a public link to click through the live app."]
+    ],
+    calls: [
+      ["shield", "pink", "Add, never overwrite", "Volunteers create new notes; staff records stay untouched."],
+      ["form", "blue", "Ask more only when needed", "Normal visits stay under 2 minutes."],
+      ["bell", "mint", "Alert where staff look", "Concerns go to exam history, clearly labeled."]
+    ],
+    next: [["paw", "Pilot with a foster program"], ["plug", "Live shelter-system integration"], ["layers", "Extend to intake and adoptions"]]
+  },
+  {
+    id: "haas-agent",
+    name: "Haas Study Agent",
+    short: "Haas Study Agent",
+    tagline: "A one-stop study assistant that tracks every deadline across my MBA courses and answers what I need to know.",
+    status: "Used every week", tone: "cyan",
+    meta: "Solo build · Personal tool · AI agent",
+    cover: "haas-agent.jpg",
+    links: [{ label: "Try the demo", url: "https://mba-study-agent-bryanc.streamlit.app/", primary: true }],
+    linkNote: "The public demo holds limited sample data and may take a moment to wake up.",
+    stats: [["clock", "pink", "83%", "less weekly prep: 3 hrs down to 30 min"], ["calendar", "mint", "0", "missed deadlines this semester, down from about one a week"], ["book", "blue", "4", "courses in one place"], ["hourglass", "gold", "Hours", "estimated per assignment"]],
+    mess: {
+      scraps: [
+        ["calendar", "Syllabi", "Due dates buried in PDFs", "4%", "4%", -4],
+        ["folder", "Canvas", "4 courses, 4 layouts", "52%", "2%", 3],
+        ["file", "Lecture slides", "Dozens a week", "10%", "26%", 2],
+        ["book", "Pre-readings", "Due before class", "46%", "30%", -3],
+        ["mic", "Lecture transcripts", "From Granola", "0%", "54%", -2],
+        ["form", "My own notes", "Scattered files", "42%", "60%", 4],
+        ["target", "Midterms & finals", "Different dates per course", "16%", "80%", 1]
+      ],
+      ask: "What's due this week?",
+      items: [
+        ["var(--brand)", "Accounting problem set", "Due Wed · from syllabus", "~2.5 hrs"],
+        ["var(--cyan)", "Leading People pre-reading", "Before Thu class", "~45 min"],
+        ["var(--amber)", "Microeconomics midterm", "Next Tue · start review now", "~4 hrs"]
+      ],
+      sum: "Summary of key Data & Decisions concepts so far is ready."
+    },
+    pipeline: [
+      { icon: "plug", t: "Collect", d: "Canvas files, syllabi, notes", tools: ["Canvas API", "watchdog", "Granola*"] },
+      { icon: "scan", t: "Read", d: "PDFs turned into text", tools: ["pdfplumber"] },
+      { icon: "spark", t: "Understand", d: "Course, type, due dates, exams", tools: ["Claude API"] },
+      { icon: "brain", t: "Course brain", d: "Everything in one library", tools: ["SQLite"] },
+      { icon: "chat", t: "Ask anything", d: "What's due, time needed, summaries, quizzes", tools: ["Streamlit", "Claude API"] }
+    ],
+    pipeNote: `<b style="color:#FFD27A">Granola*</b> lecture transcripts are being connected next · written in <b>Python</b>`,
+    walkthrough: [
+      { img: "haas-agent.jpg", t: "Sync, then ask", d: "One click pulls new course files; then pick a course, a time range, and a question." },
+      { img: "haas-practice.jpg", t: "Study with AI-graded practice", d: "Questions built from this week's material, graded with feedback." }
+    ],
+    stack: [
+      ["Claude API", "Reads each file to find the course, type, due dates, and exams; estimates time; writes summaries and quizzes."],
+      ["Canvas API", "Pulls new course files automatically."],
+      ["watchdog", "Picks up files I download by hand, for courses where Canvas access is off."],
+      ["pdfplumber", "Turns slides, syllabi, and readings into text the AI can read."],
+      ["SQLite", "The course brain: every document, deadline, and note, searchable by course and date."],
+      ["Streamlit", "The simple web app I open before class."],
+      ["Granola", "Records my lectures; its transcripts are the next source to merge with my notes."],
+      ["Python", "Ties the whole pipeline together."]
+    ],
+    calls: [
+      ["chat", "pink", "Answer questions, not store files", "The value is asking \"what's due?\", not browsing folders."],
+      ["clock", "blue", "Plan by effort, not just date", "A 3-hour assignment due Friday outranks a 20-minute reading due Thursday."],
+      ["file", "mint", "Never cut the source short", "Full text always, after a trimmed syllabus once lost its exam dates."]
+    ],
+    next: [["mic", "Merge Granola transcripts with notes"], ["cloud", "Always-on hosting"], ["eye", "Live view of what the agent is doing"], ["bell", "Weekly digest before class"]]
+  }
+];
+
+const INDUSTRIES = [
+  ["cup", "Food tech", "Decafino"],
+  ["cloud", "Cloud & cognitive services", "IBM"],
+  ["hanger", "Retail fashion", "Belle Fashion Group"],
+  ["live", "Livestream & ecommerce", "Romomo / TikTok"],
+  ["pie", "Investment management, tech & AI", "Vincera Capital"]
+];
+
+const PATH = [
+  ["2026 to now", "UC Berkeley Haas", "MBA, Class of 2028", ""],
+  ["2025 to 2026", "Vincera Capital", "EVP, Product", "Investment management"],
+  ["2024 to 2025", "Romomo / TikTok", "Associate Director, Live-Commerce Product & Experience", "Livestream & ecommerce"],
+  ["2023 to 2024", "Vincera Capital", "EVP, Portfolio Strategy", "Investment management"],
+  ["2021 to 2023", "Belle Fashion Group", "Champion Kids", "Retail fashion"],
+  ["2019 to 2021", "IBM", "Cloud & AI, Beijing and Southeast Asia", "Cloud & cognitive services"],
+  ["2016 to 2017", "Decafino", "Co-founder, Seattle", "Food tech"]
+];
+
+const HERO_TAGS = [["pie", "VIT · Investment management platform"], ["paw", "PetConnect · AI agent for animal shelters"], ["calendar", "Haas Study Agent · AI study assistant"]];
+
+/* ================= RENDERING ================= */
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const linkBtns = p => p.links.map(l => `<a class="btn ${l.primary ? "primary" : ""}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("");
+const toolList = p => [...new Set(p.stack.map(s => s[0]))];
+
+function home() {
+  return `
+  <section class="hero">
+    <div>
+      <h1 class="wordmark"><span class="chen">Chen</span>sational<br>Products<span class="cursor" aria-hidden="true"></span></h1>
+      <p class="lede">I'm <strong>Bryan Chen</strong>, a Haas MBA who builds software for real operators. Open any product to see the problem, how it works, and a live demo.</p>
+      <div class="hero-ctas"><a class="btn primary" href="#" data-go="products">Browse products</a><a class="btn" href="https://www.linkedin.com/in/bryan-chen-haas" target="_blank" rel="noopener">LinkedIn</a></div>
+    </div>
+    <div class="collage" aria-label="Product previews">
+      ${PRODUCTS.map((p, k) => `<a class="frame f${k + 1}" href="#${p.id}" aria-label="Open ${esc(p.short)}"><span class="bar"><i></i><i></i><i></i></span><img src="${esc(p.cover)}" alt=""></a>`).join("")}
+      ${HERO_TAGS.map(([i, t], k) => `<span class="tag t${k + 1}">${ic(i)}${esc(t)}</span>`).join("")}
+    </div>
+  </section>
+  <div class="industries">
+    <span class="lbl">Industries I've worked in</span>
+    <div class="ind-list">${INDUSTRIES.map(([i, a, b]) => `<span class="ind">${ic(i)}${esc(a)}<small>${esc(b)}</small></span>`).join("")}</div>
+  </div>
+
+  <section class="sec" id="products">
+    <div class="sec-head"><h2>Products</h2><p>Each one started with a real person and a real problem. Click in for the full walkthrough.</p></div>
+    <div class="grid">
+      ${PRODUCTS.map(p => `
+      <a class="card" href="#${p.id}">
+        <div class="shot"><img src="${esc(p.cover)}" alt="Screenshot of ${esc(p.short)}" loading="lazy"></div>
+        <div class="body">
+          <span class="status ${p.tone}">${esc(p.status)}</span>
+          <h3>${esc(p.name)}</h3>
+          <p>${esc(p.tagline)}</p>
+          <div class="chips">${toolList(p).slice(0, 5).map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+          <span class="go">See how it works</span>
+        </div>
+      </a>`).join("")}
+    </div>
+    <div class="next-card">${ic("plus")}<span><b>Next build in progress.</b> A new AI application ships most Sundays.</span></div>
+  </section>
+
+  <section class="sec about" id="about">
+    <div>
+      <h2>About</h2>
+      <p>I came to building through operations. Across food tech, cloud, retail, live commerce, and investment management, I kept running into tools that didn't exist yet, so I started building them.</p>
+      <p>I work like a PM who ships: find the person with the problem, watch how they work today, then build the smallest thing they'll actually use every day.</p>
+    </div>
+    <ul class="path" aria-label="Career path">
+      ${PATH.map(([y, c, r, ind]) => `<li><span class="yr">${esc(y)}</span><span><span class="co">${esc(c)}</span><span class="role">${esc(r)}</span>${ind ? `<span class="ind-tag">${esc(ind)}</span>` : ""}</span></li>`).join("")}
+    </ul>
+  </section>`;
+}
+
+function flow(cls, label, f) {
+  return `<div class="flow ${cls}">
+    <span class="flow-label">${label}</span>
+    <div class="flow-steps">${f.steps.map(([i, a, b]) => `<div class="fstep"><span class="dot">${ic(i)}</span><b>${esc(a)}</b><small>${esc(b)}</small></div>`).join("")}</div>
+    <div class="flow-foot">${ic(f.foot[0])}${esc(f.foot[1])}</div>
+  </div>`;
+}
+
+function mess(m) {
+  return `<div class="mess">
+    <div class="pile" aria-label="Where coursework lives today">
+      ${m.scraps.map(([i, a, b, x, y, r]) => `<div class="scrap" style="left:${x};top:${y};transform:rotate(${r}deg)"><span class="ico blue" style="width:34px;height:34px;border-radius:9px">${ic(i)}</span><span><b>${esc(a)}</b><small>${esc(b)}</small></span></div>`).join("")}
+    </div>
+    <div class="mess-arrow"><span class="ico pink">${ic("brain")}</span></div>
+    <div>
+      <div class="answer">
+        <div class="ask">${ic("chat")}${esc(m.ask)}<span class="me">asked by me</span></div>
+        <div class="reply">
+          ${m.items.map(([c, a, b, h]) => `<div class="due"><span class="bar" style="background:${c}"></span><span><b>${esc(a)}</b><small>${esc(b)}</small></span><span class="hrs">${esc(h)}</span></div>`).join("")}
+          <div class="sum">${ic("spark")}<span>${esc(m.sum)}</span></div>
+        </div>
+      </div>
+      <p class="illus">Illustrative example of the kind of answer it gives.</p>
+    </div>
+  </div>`;
+}
+
+function detail(p) {
+  const i = PRODUCTS.indexOf(p);
+  const prev = PRODUCTS[(i - 1 + PRODUCTS.length) % PRODUCTS.length], nxt = PRODUCTS[(i + 1) % PRODUCTS.length];
+  const problem = p.mess
+    ? `<h2>The problem: coursework is everywhere</h2>${mess(p.mess)}`
+    : `<h2>Before and after</h2><div class="flows">${flow("before", ic("clock") + "Before", p.before)}${flow("after", ic("bolt") + "With " + esc(p.short), p.after)}</div>`;
+  return `
+  <a class="crumb" href="#" data-go="products">← All products</a>
+  <section class="cs-head">
+    <div>
+      <div class="meta-row"><span class="status ${p.tone}">${esc(p.status)}</span><span>${esc(p.meta)}</span></div>
+      <h1 class="cs-title">${esc(p.name)}</h1>
+      <p class="cs-tag">${esc(p.tagline)}</p>
+    </div>
+    <div class="cs-ctas">${linkBtns(p)}${p.linkNote ? `<p class="note">${esc(p.linkNote)}</p>` : ""}</div>
+  </section>
+
+  <div class="stats">${p.stats.map(([icn, col, a, b]) => `<div class="stat"><span class="ico ${col}">${ic(icn)}</span><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join("")}</div>
+  ${p.statsNote ? `<p class="stats-note">${esc(p.statsNote)}</p>` : ""}
+
+  <section class="cs-sec">${problem}</section>
+
+  <section class="cs-sec">
+    <h2>How it works</h2>
+    <div class="pipe">
+      <div class="pipe-row">${p.pipeline.map((n, k) => `${k ? `<div class="arrow" aria-hidden="true">${ic("arrow")}</div>` : ""}
+        <div class="node ${n.who === "Bryan" ? "mine" : ""}">
+          <span class="ni">${ic(n.icon)}</span>
+          <span class="t">${esc(n.t)}</span>
+          <span class="d">${esc(n.d)}</span>
+          ${n.who ? `<span class="who">built by ${esc(n.who)}</span>` : ""}
+          ${n.tools.length ? `<span class="tools">${n.tools.map(t => `<span class="${t.endsWith("*") ? "soon" : ""}">${esc(t)}</span>`).join("")}</span>` : ""}
+        </div>`).join("")}</div>
+      ${p.pipeNote ? `<p class="pipe-side">${p.pipeNote}</p>` : ""}
+    </div>
+  </section>
+
+  <section class="cs-sec">
+    <h2>See it in action</h2>
+    <div class="walk">${p.walkthrough.map((w, k) => `
+      <div class="shot-item">
+        <button class="shot-frame" type="button" data-zoom="${esc(w.img)}" data-cap="${esc(w.t)}" aria-label="Enlarge: ${esc(w.t)}"><span class="chrome"><i></i><i></i><i></i></span><img src="${esc(w.img)}" alt="${esc(w.t)}" loading="lazy"></button>
+        <div class="shot-text"><span class="n">${k + 1}</span><h3>${esc(w.t)}</h3><p>${esc(w.d)}</p></div>
+      </div>`).join("")}</div>
+  </section>
+
+  <section class="cs-sec">
+    <h2>The stack</h2>
+    <p class="stack-hint">Tap any tool to see what it is and what it did here.</p>
+    <div class="stack">${p.stack.map(([t, role], k) => { const T = TOOLS[t] || { icon: "spark", cat: "", what: "" }; return `
+      <details class="tool" id="tool-${p.id}-${k}">
+        <summary><span class="ico blue">${ic(T.icon)}</span><span><span class="tn">${esc(t)}</span><span class="tc">${esc(T.cat)}</span></span><span class="plus" aria-hidden="true">+</span></summary>
+        <div class="tbody"><p class="what">${esc(T.what)}</p><p class="here"><b>Here:</b> ${esc(role)}</p></div>
+      </details>`; }).join("")}</div>
+  </section>
+
+  <section class="cs-sec">
+    <h2>Product calls</h2>
+    <div class="calls">${p.calls.map(([icn, col, h, d]) => `<div class="call"><span class="ico ${col}">${ic(icn)}</span><h3>${esc(h)}</h3><p>${esc(d)}</p></div>`).join("")}</div>
+  </section>
+
+  <section class="cs-sec">
+    <h2>What's next</h2>
+    <div class="nexts">${p.next.map(([icn, t]) => `<span>${ic(icn)}${esc(t)}</span>`).join("")}</div>
+  </section>
+
+  <nav class="pager" aria-label="More products">
+    <a href="#${prev.id}"><small>Previous</small><b>${esc(prev.short)}</b></a>
+    <a class="right" href="#${nxt.id}"><small>Next</small><b>${esc(nxt.short)}</b></a>
+  </nav>`;
+}
+
+let pendingScroll = null;
+function route() {
+  const id = location.hash.replace("#", "");
+  const p = PRODUCTS.find(x => x.id === id);
+  app.innerHTML = p ? detail(p) : home();
+  document.title = p ? `${p.short} | Chensational Products` : "Chensational Products";
+  if (pendingScroll && !p) { const el = document.getElementById(pendingScroll); pendingScroll = null; if (el) { el.scrollIntoView(); return; } }
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+
+document.addEventListener("click", e => {
+  const go = e.target.closest("[data-go],[data-home]");
+  if (go) {
+    e.preventDefault();
+    const target = go.dataset.go;
+    if (target === "contact") { document.getElementById("contact").scrollIntoView({ behavior: "smooth" }); return; }
+    if (location.hash && location.hash !== "#") { pendingScroll = target || null; location.hash = ""; route(); }
+    else if (target) document.getElementById(target)?.scrollIntoView({ behavior: "smooth" });
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+  const z = e.target.closest("[data-zoom]");
+  if (z) {
+    document.getElementById("lb-img").src = z.dataset.zoom;
+    document.getElementById("lb-img").alt = z.dataset.cap;
+    document.getElementById("lb-cap").textContent = z.dataset.cap;
+    document.getElementById("lb").showModal();
+  }
+});
+document.getElementById("lb-close").addEventListener("click", () => document.getElementById("lb").close());
+document.getElementById("lb").addEventListener("click", e => { if (e.target.id === "lb") e.target.close(); });
+
+document.getElementById("copy").addEventListener("click", async e => {
+  const btn = e.currentTarget, el = document.getElementById("email");
+  try { await navigator.clipboard.writeText(el.textContent); btn.textContent = "Copied"; }
+  catch { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected"; }
+  setTimeout(() => (btn.textContent = "Copy email"), 2000);
+});
+
+route();
+</script>
+
+</body>
+</html>
