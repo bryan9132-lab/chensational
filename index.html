@@ -531,7 +531,7 @@ const PRODUCTS = [
     tagline: "A one-stop study assistant that tracks every deadline across my MBA courses and answers what I need to know.",
     status: "Used every week", tone: "cyan",
     meta: "Solo build · Personal tool · AI agent",
-    cover: "haas-agent.jpg",
+    cover: "haas-answer.jpg",
     links: [{ label: "Try the demo", url: "https://study.chensational.dev/", primary: true }],
     linkNote: "The public demo uses sample course material, not real class files.",
     stats: [["clock", "pink", "83%", "less weekly prep: 3 hrs down to 30 min"], ["calendar", "mint", "0", "missed deadlines this semester, down from about one a week"], ["book", "blue", "4", "courses in one place"], ["hourglass", "gold", "Hours", "estimated per assignment"]],
@@ -541,7 +541,7 @@ const PRODUCTS = [
         ["folder", "Canvas", "4 courses, 4 layouts", "52%", "2%", 3],
         ["file", "Lecture slides", "Dozens a week", "10%", "26%", 2],
         ["book", "Pre-readings", "Due before class", "46%", "30%", -3],
-        ["mic", "Lecture transcripts", "From Granola", "0%", "54%", -2],
+        ["mic", "Lecture notes", "From Granola", "0%", "54%", -2],
         ["form", "My own notes", "Scattered files", "42%", "60%", 4],
         ["target", "Midterms & finals", "Different dates per course", "16%", "80%", 1]
       ],
@@ -554,16 +554,18 @@ const PRODUCTS = [
       sum: "Summary of key Data & Decisions concepts so far is ready."
     },
     pipeline: [
-      { icon: "plug", t: "Collect", d: "Canvas files, syllabi, notes", tools: ["Canvas API", "watchdog", "Granola*"] },
+      { icon: "plug", t: "Collect", d: "Canvas files, syllabi, lecture notes", tools: ["Canvas API", "watchdog", "Granola"] },
       { icon: "scan", t: "Read", d: "PDFs turned into text", tools: ["pdfplumber"] },
       { icon: "spark", t: "Understand", d: "Course, type, due dates, exams", tools: ["Claude API"] },
       { icon: "brain", t: "Course brain", d: "Everything in one library", tools: ["SQLite"] },
       { icon: "chat", t: "Ask anything", d: "What's due, time needed, summaries, quizzes", tools: ["Streamlit", "Claude API"] }
     ],
-    pipeNote: `<b style="color:#FFD27A">Granola*</b> lecture transcripts are being connected next · written in <b>Python</b>`,
+    pipeNote: `<b>Granola</b> lecture notes flow in alongside Canvas files · written in <b>Python</b>`,
     walkthrough: [
-      { img: "haas-agent.jpg", t: "Sync, then ask", d: "One click pulls new course files; then pick a course, a time range, and a question." },
-      { img: "haas-practice.jpg", t: "Study with AI-graded practice", d: "Questions built from this week's material, graded with feedback." }
+      { img: "haas-answer.jpg", t: "One question, every deadline", d: "Asks across all four courses and returns each deadline in date order, with a time estimate and the total workload." },
+      { img: "haas-steps.jpg", t: "Shows its work, live", d: "Every answer displays the agent's steps: searching the course brain, what it found, and what it sends to Claude." },
+      { img: "haas-hood.jpg", t: "Under the hood", d: "What's in the course brain, what was added recently, and a log of everything the agent did." },
+      { img: "haas-practice.jpg", t: "Study with AI-graded practice", d: "Questions built from my own material, graded with feedback." }
     ],
     stack: [
       ["Claude API", "Reads each file to find the course, type, due dates, and exams; estimates time; writes summaries and quizzes."],
@@ -573,7 +575,7 @@ const PRODUCTS = [
       ["SQLite", "The course brain: every document, deadline, and note, searchable by course and date."],
       ["Streamlit", "The simple web app I open before class."],
       ["Railway", "Hosts the always-on public demo with permanent storage."],
-      ["Granola", "Records my lectures; its transcripts are the next source to merge with my notes."],
+      ["Granola", "Records my lectures; its notes are pasted in and merged with slides and syllabi in the course brain."],
       ["Python", "Ties the whole pipeline together."]
     ],
     calls: [
@@ -581,7 +583,7 @@ const PRODUCTS = [
       ["clock", "blue", "Plan by effort, not just date", "A 3-hour assignment due Friday outranks a 20-minute reading due Thursday."],
       ["file", "mint", "Never cut the source short", "Full text always, after a trimmed syllabus once lost its exam dates."]
     ],
-    next: [["mic", "Merge Granola transcripts with notes"], ["eye", "Live view of what the agent is doing"], ["bell", "Weekly digest before class"]]
+    next: [["calendar", "Send deadlines to Google Calendar"], ["eye", "Live view of what the agent is doing"], ["bell", "Weekly digest before class"]]
   }
 ];
 
